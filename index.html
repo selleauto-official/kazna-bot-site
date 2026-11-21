@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КазнаБот — бот-казначей для СНТ и посёлков</title>
+<style>
+  :root{
+    --accent:#FF6B2C;
+    --accent-dark:#E5511A;
+    --accent-soft:#FFF0E6;
+    --teal:#0E9F94;
+    --ink:#22303C;
+    --muted:#64748B;
+    --bg:#FFF9F4;
+    --card:#FFFFFF;
+    --line:#F1E4D8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  h2{font-size:32px;margin-bottom:10px;letter-spacing:-.5px}
+  .sub{color:var(--muted);max-width:640px;margin-bottom:36px;font-size:17px}
+  section{padding:64px 0}
+  section.alt{background:#FFF3E8}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:50;background:#FFF9F4EE;backdrop-filter:blur(8px);border-bottom:2px solid var(--accent)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-weight:800;font-size:22px}
+  .logo b{color:var(--accent)}
+  .nav a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;margin-left:22px}
+  .nav a:hover{color:var(--accent)}
+  @media(max-width:900px){.nav .links{display:none}}
+
+  /* HERO */
+  .hero{background:linear-gradient(120deg,#FF6B2C 0%,#FF8E3C 55%,#FFB347 100%);color:#fff;padding:72px 0 84px}
+  .hero .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+  .hero h1{font-size:44px;line-height:1.15;letter-spacing:-1px;margin-bottom:18px}
+  .hero h1 span{background:#fff;color:var(--accent-dark);padding:0 10px;border-radius:8px}
+  .hero p{font-size:18px;opacity:.95;max-width:520px;margin-bottom:28px}
+  .btn{display:inline-block;padding:15px 30px;border-radius:12px;font-weight:700;font-size:17px;text-decoration:none;transition:.2s}
+  .btn-white{background:#fff;color:var(--accent-dark)}
+  .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .btn-ghost{border:2px solid rgba(255,255,255,.7);color:#fff;margin-left:12px}
+  .btn-ghost:hover{background:rgba(255,255,255,.15)}
+  .hero-note{margin-top:16px;font-size:14px;opacity:.9}
+  .phone{background:#fff;border-radius:28px;padding:10px;box-shadow:0 24px 60px rgba(0,0,0,.28);transform:rotate(2deg)}
+  .phone img{display:block;width:100%;border-radius:20px}
+  @media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero h1{font-size:32px}.phone{transform:none;max-width:340px;margin:0 auto}}
+
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(34,48,60,.05)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:860px){.grid3,.grid2{grid-template-columns:1fr}}
+
+  /* DEMO */
+  .demo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  @media(max-width:860px){.demo .wrap{grid-template-columns:1fr}}
+  .progress{height:14px;background:#F3E9DF;border-radius:10px;overflow:hidden;margin:16px 0 6px}
+  .progress i{display:block;height:100%;width:43%;background:linear-gradient(90deg,var(--accent),#FFB347);border-radius:10px}
+  .row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--line);font-size:16px}
+  .row:last-child{border:none}
+  .row b{white-space:nowrap}
+  .row .spent{color:var(--teal)}
+
+  /* GALLERY */
+  .gal{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 4px 20px}
+  .gal::-webkit-scrollbar{height:10px}
+  .gal::-webkit-scrollbar-thumb{background:var(--accent);border-radius:6px}
+  .gal::-webkit-scrollbar-track{background:var(--accent-soft);border-radius:6px}
+  .shot{scroll-snap-align:start;flex:0 0 260px}
+  .shot img{width:100%;border-radius:18px;border:3px solid var(--accent);box-shadow:0 10px 26px rgba(229,81,26,.18);display:block}
+  .shot figcaption{margin-top:10px;font-size:14.5px;font-weight:600;line-height:1.4}
+  .stepnum{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:14px;align-items:center;justify-content:center;margin-right:8px}
+
+  /* ROLES */
+  .role img{width:100%;border-radius:14px;margin-bottom:14px;border:1px solid var(--line)}
+  .role h3{margin-bottom:8px}
+  .tag{display:inline-block;background:var(--accent-soft);color:var(--accent-dark);font-size:12.5px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+
+  /* FEATURE ROWS */
+  .feat{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;margin-bottom:48px}
+  .feat:last-child{margin-bottom:0}
+  .feat img{width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(34,48,60,.08)}
+  .feat h3{font-size:22px;margin-bottom:10px}
+  .feat p{color:var(--muted)}
+  @media(max-width:860px){.feat{grid-template-columns:1fr}}
+
+  /* HASH */
+  .hashbox{background:#22303C;color:#EAF3F0;border-radius:16px;padding:28px 30px;font-size:16.5px;line-height:1.65}
+  .hashbox b{color:#FFB347}
+
+  /* CHIPS */
+  .chips{display:flex;flex-wrap:wrap;gap:12px}
+  .chip{background:#fff;border:2px solid var(--accent);color:var(--accent-dark);border-radius:24px;padding:10px 22px;font-weight:700;font-size:16px}
+
+  /* PRIVACY */
+  .cmd{display:inline-block;background:#22303C;color:#7CE3B9;font-family:Consolas,monospace;padding:4px 10px;border-radius:8px;font-size:15px}
+
+  /* START */
+  .steps3{counter-reset:s}
+  .steps3 .card{position:relative;padding-top:28px}
+  .steps3 .card::before{counter-increment:s;content:counter(s);position:absolute;top:-16px;left:24px;width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(229,81,26,.35)}
+
+  /* FAQ */
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  summary{cursor:pointer;padding:18px 22px;font-weight:700;list-style:none;position:relative}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:20px;top:14px;font-size:24px;color:var(--accent);transition:.2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details div{padding:0 22px 18px;color:var(--muted)}
+
+  /* CTA */
+  .cta{background:linear-gradient(120deg,#0E9F94,#12B5A8);color:#fff;border-radius:20px;padding:44px;text-align:center}
+  .cta h2{color:#fff}
+  .cta p{opacity:.92;margin-bottom:24px}
+  .cta .btn-white{color:#0B7C73}
+
+  footer{background:#22303C;color:#B8C4CE;padding:36px 0;font-size:14.5px;text-align:center}
+  footer a{color:#FFB347;text-decoration:none}
+</style>
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <div class="logo">Казна<b>Бот</b></div>
+  <div class="links">
+    <a href="#how">Как работает</a>
+    <a href="#roles">Роли</a>
+    <a href="#transparency">Прозрачность</a>
+    <a href="#privacy">Приватность</a>
+    <a href="#faq">Вопросы</a>
+    <a href="#start" style="color:var(--accent)">Написать нам</a>
+  </div>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Узнайте, куда ушёл <span>каждый рубль</span> вашего посёлка</h1>
+    <p>Бот-казначей для СНТ и коттеджных посёлков: собирает взносы, ведёт учёт по улицам и участкам и отдаёт прозрачный отчёт в общий чат. Без таблиц, тетрадок и «спросите у председателя».</p>
+    <a class="btn btn-white" href="https://t.me/snt_zarechye_bot">Открыть демо-бота</a>
+    <a class="btn btn-ghost" href="#start">Написать нам</a>
+    <div class="hero-note">Демо-посёлок «СНТ Заречье»: бесплатно, без обязательств</div>
+  </div>
+  <div class="phone"><img src="01-main-menu.jpeg" alt="Главное меню бота КазнаБот"></div>
+</div></section>
+
+<section class="demo"><div class="wrap">
+  <div class="card">
+    <div style="color:var(--muted);font-size:14px;margin-bottom:6px">Демо: сбор «Дороги и покрытие 2026»</div>
+    <h3 style="font-size:22px">Дороги и покрытие 2026</h3>
+    <div style="color:var(--muted);font-size:15px">цель 560 000 ₽ · участвовало 87 из 160</div>
+    <div class="progress"><i></i></div>
+    <div style="font-size:13px;color:var(--accent-dark);font-weight:700;margin-bottom:10px">43% цели</div>
+    <div class="row"><span>Собрано</span><b>241 500 ₽</b></div>
+    <div class="row"><span>Освоено</span><b class="spent">208 000 ₽ (плиты, щебень, трактор)</b></div>
+    <div class="row"><span>Осталось до цели</span><b>318 500 ₽</b></div>
+  </div>
+  <div>
+    <h2>Сосед видит сбор, а не «денеги где-то там»</h2>
+    <p class="sub" style="margin-bottom:20px">Карточка сбора — живая: цель, прогресс, остаток. Как собрать видно соседу, так и казначею.</p>
+    <img src="02-fund-card.jpeg" alt="Карточка сбора в боте" style="max-width:380px;width:100%;border-radius:18px;border:3px solid var(--accent);box-shadow:0 10px 26px rgba(229,81,26,.18)">
+  </div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <h2>Знакомая история?</h2>
+  <p class="sub">Каждый посёлок проходит через одно и то же. Мы просто убрали из этого пути ручной труд и недоверие.</p>
+  <div class="grid3">
+    <div class="card"><h3 style="margin-bottom:8px">📓 Тетрадка казначея</h3><p style="color:var(--muted)">«Кто заплатил, кто нет» — в тетради у казначея. Сгорела на даче или ушла на больничный — и вся история сбора в никуда.</p></div>
+    <div class="card"><h3 style="margin-bottom:8px">🖥 Excel на одном компьютере</h3><p style="color:var(--muted)">Таблица есть, но она у одного человека. Сосед её не видит, значить, не верит. Долги копятся молча.</p></div>
+    <div class="card"><h3 style="margin-bottom:8px">❓ «А куда дели деньги?»</h3><p style="color:var(--muted)">Главный вопрос любого сбора. Возникает всегда, когда отчёта нет на виду. Отвечать на него руками — значит ссориться.</p></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2>Как это работает</h2>
+  <p class="sub">Соседу — три касания. Казначею — одна кнопка подтверждения. Остальное бот делает сам. Вот путь взноса от чека до казны — восемь настоящих экранов демо-бота.</p>
+  <div class="gal">
+    <figure class="shot"><span class="stepnum">1</span><img src="20-check-ready.jpeg" alt="Чек готов в приложении банка" loading="lazy"><figcaption>Перевёл деньги — чек готов в приложении банка</figcaption></figure>
+    <figure class="shot"><span class="stepnum">2</span><img src="21-share-sheet.jpeg" alt="Поделиться через Telegram" loading="lazy"><figcaption>Жмёте «Поделиться» и выбираете Telegram</figcaption></figure>
+    <figure class="shot"><span class="stepnum">3</span><img src="22-pick-bot.jpeg" alt="Выбор бота в списке чатов" loading="lazy"><figcaption>Выбираете бота посёлка из списка чатов</figcaption></figure>
+    <figure class="shot"><span class="stepnum">4</span><img src="23-check-received.jpeg" alt="Чек получен" loading="lazy"><figcaption>Бот принял чек и просит выбрать сбор</figcaption></figure>
+    <figure class="shot"><span class="stepnum">5</span><img src="24-pick-plot.jpeg" alt="Выбор участка" loading="lazy"><figcaption>Подтверждаете свой участок</figcaption></figure>
+    <figure class="shot"><span class="stepnum">6</span><img src="25-pick-method.jpeg" alt="Выбор способа оплаты" loading="lazy"><figcaption>Указываете, как платили: наличными или переводом</figcaption></figure>
+    <figure class="shot"><span class="stepnum">7</span><img src="26-amount-typed.jpeg" alt="Ввод суммы взноса" loading="lazy"><figcaption>Называете сумму взноса — 3 500 ₽</figcaption></figure>
+    <figure class="shot"><span class="stepnum">8</span><img src="27-fee-accepted.jpeg" alt="Взнос принят" loading="lazy"><figcaption>Готово: «✅ Взнос принят» — казначей увидит взнос на подтверждение</figcaption></figure>
+  </div>
+</div></section>
+
+<section class="alt" id="roles"><div class="wrap">
+  <h2>Три роли — и у каждой свой экран</h2>
+  <p class="sub">Никаких «универсальных кабинетов», в которых никто не может ничего найти. У каждой роли — свой сценарий.</p>
+  <div class="grid3">
+    <div class="card role"><span class="tag">Админ</span><img src="01-main-menu.jpeg" alt="Кабинет админа" loading="lazy"><h3>Глава посёлка</h3><p style="color:var(--muted)">Создаёт улицы и участки, назначает казначеев, заводит сборы. Кабинет админа — всё управление в одном меню.</p></div>
+    <div class="card role"><span class="tag">Казначей</span><img src="03-payment-confirmed.jpeg" alt="Казначей подтвердил взнос" loading="lazy"><h3>Считает деньги</h3><p style="color:var(--muted)">Подтверждает взносы одним нажатием, вносит расходы с чеком, выгружает отчёты. Никаких таблиц — всё в Telegram.</p></div>
+    <div class="card role"><span class="tag">Сосед</span><img src="07-group-chat.jpeg" alt="Отчёт в общем чате посёлка" loading="lazy"><h3>Платит и проверяет</h3><p style="color:var(--muted)">Пересылает чек и называет участок — взнос учтён. Сводки и отчёты приходят в общий чат: всё видно, ничего не скрывается.</p></div>
+  </div>
+</div></section>
+
+<section id="transparency"><div class="wrap">
+  <h2>Прозрачность, которую проверяют соседи</h2>
+  <p class="sub">Не «доверьтесь казначею», а «откройте и посчитайте сами».</p>
+
+  <div class="feat">
+    <div><img src="05-excel-report.jpeg" alt="Excel-отчёт: учёт по улицам" loading="lazy"></div>
+    <div><h3>Учёт по каждой улице</h3><p>Приход, расход и баланс видно по посёлку целиком и по каждой улице в отдельности. Приложите карту — и картина полная: какие улицы заплатили, а какие в долгах.</p><img src="05b-excel-map.jpeg" alt="Карта посёлка по улицам" loading="lazy" style="margin-top:14px;border-radius:14px;border:1px solid var(--line)"></div>
+  </div>
+
+  <div class="feat">
+    <div><h3>Отчёт прямо в чат</h3><p>Сводки и Excel-отчёты приходят в Telegram — скачивай и проверяй хоть каждый день. Никаких «зайдите к казначею с тетрадкой».</p></div>
+    <div><img src="04-chat-report.jpeg" alt="Отчёт с Excel-файлом в чате" loading="lazy"></div>
+  </div>
+
+  <div class="feat">
+    <div><img src="12-receipt-expense.jpeg" alt="Чек расхода в казне" loading="lazy"></div>
+    <div><h3>Каждый расход — с чеком</h3><p>Плиты, песок, услуги трактора: расход появляется в казне вместе с документом. Соседи видят не только «собрали», но и «освоили» — с подтверждением на каждую покупку.</p></div>
+  </div>
+
+  <div class="feat">
+    <div><h3>Отчёт нельзя подделать незаметно</h3><p>Каждый отчёт подписывается хэш-подписью. Если файл после выгрузки правили вручную — бот это увидит и скажет прямо: «файл менялся вручную!». Историю учёта невозможно тихо переписать задним числом.</p></div>
+    <div><img src="06-hash-check.jpeg" alt="Проверка хэш-подписи отчёта" loading="lazy"><img src="05c-excel-full.jpeg" alt="Хэш-подпись в Excel-отчёте" loading="lazy" style="margin-top:14px;border-radius:14px;border:1px solid var(--line)"></div>
+  </div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <h2>Ваш посёлок — ваши правила. Даже имя бота</h2>
+  <p class="sub" style="margin-bottom:24px">«КазнаБот» и «СчетоводБот» — это наши рабочие демо-имена. У вас бот будет называться так, как решит ваш посёлок: по названию СНТ, по имени председателя или просто «Казна». Мы делаем отдельную копию бота под ваш посёлок, с вашими улицами, участками и сборами — вы создаёте бота в BotFather с любым именем и аватаром, а вся начинка — наша.</p>
+  <div class="chips">
+    <span class="chip">«СНТ Заречье — Казна»</span>
+    <span class="chip">«Дороги 2026»</span>
+    <span class="chip">«Бот Светланы Ивановны»</span>
+    <span class="chip">Как скажете — так и будет</span>
+  </div>
+</div></section>
+
+<section id="privacy"><div class="wrap">
+  <h2>Приватность по-честному</h2>
+  <p class="sub">Данные принадлежат вашему посёлку, а не нам.</p>
+  <div class="feat">
+    <div>
+      <h3><span class="cmd">/policy</span> — всё открыто</h3>
+      <p>Политика обработки данных — прямо в боте, человеческим языком, без двадцати страниц юридического мелкого шрифта.</p>
+      <p style="margin-top:12px">Мы — зарегистрированный оператор персональных данных: реестр Роскомнадзора № 77-26-580272, запись публична — можно открыть pd.rkn.gov.ru и проверить.</p>
+    </div>
+    <div><img src="09-policy.jpeg" alt="Политика в боте" loading="lazy"></div>
+  </div>
+  <div class="feat">
+    <div><img src="08-privacy-commands.jpeg" alt="Команды /policy и /deluser" loading="lazy"></div>
+    <div>
+      <h3><span class="cmd">/deluser</span> — удаление в один шаг</h3>
+      <p>Захотели уйти — команда /deluser удаляет ваши данные из рабочей базы сразу, никаких «оставьте заявку на удаление». Из резервных копий данные исключаются в срок не позднее 30 дней — это написано прямо в политике, без сюрпризов.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="alt" id="start"><div class="wrap">
+  <h2>Как начать</h2>
+  <p class="sub">Три шага — и бот живёт в вашем посёлке.</p>
+  <div class="grid3 steps3" style="margin-top:16px">
+    <div class="card"><h3 style="margin-bottom:8px">Напишите нам</h3><p style="color:var(--muted)">Договариваемся о месячном пилоте: настраиваем ваш посёлок бесплатно и без обязательств.</p></div>
+    <div class="card"><h3 style="margin-bottom:8px">Получаете своего бота</h3><p style="color:var(--muted)">Отдельная копия с вашими улицами, участками и сборами. Имя и аватар — ваши.</p></div>
+    <div class="card"><h3 style="margin-bottom:8px">Живёте с ботом месяц</h3><p style="color:var(--muted)">Понравилось — оплачиваете год и больше не вспоминаете. Не понравилось — расходимся без обязательств.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:28px">
+    <figure><img src="10-start-flow.jpeg" alt="Старт бота: номер участка" loading="lazy" style="width:100%;border-radius:16px;border:3px solid var(--accent);box-shadow:0 10px 26px rgba(229,81,26,.15)"><figcaption style="margin-top:10px;font-weight:600">Старт: бот спрашивает номер участка — и вы уже внутри</figcaption></figure>
+    <figure><img src="11-bot-preview.jpeg" alt="Бот в Telegram" loading="lazy" style="width:100%;border-radius:16px;border:3px solid var(--accent);box-shadow:0 10px 26px rgba(229,81,26,.15)"><figcaption style="margin-top:10px;font-weight:600">Так бот выглядит в Telegram: «Запустить бота» — и поехали</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2>Частые вопросы</h2>
+  <div style="margin-top:24px">
+    <details><summary>Нужно что-то устанавливать?</summary><div>Нет. Всё работает внутри Telegram, который уже есть у каждого соседа. Ни приложений, ни паролей.</div></details>
+    <details><summary>Кто видит мои взносы?</summary><div>Сумму и факт оплаты видит казначей. Соседи видят агрегированные сводки — по сборам и улицам, без личных реквизитов. Политика — по команде /policy.</div></details>
+    <details><summary>Вы зарегистрированный оператор персональных данных?</summary><div>Да. Мы включены в реестр операторов персональных данных Роскомнадзора (регистрационный номер 77-26-580272), запись публична и проверяется на сайте ведомства. Обработка ведётся на сервере на территории России, согласие вы даёте при регистрации в боте, отозвать можно командой /deluser в любой момент.</div></details>
+    <details><summary>А если казначей солжёт в отчёте?</summary><div>В этом и смысл бота: отчёты идут в общий чат и защищены хэш-подписью. Тихо исправить цифры задним числом не получится — расхождение увидят все.</div></details>
+    <details><summary>Сколько это стоит?</summary><div>Начинаем с месячного пилота: настраиваем, живёте с ботом месяц, смотрите, удобно ли. Понравилось — оплачиваете год и больше не вспоминаете. Не понравилось — расходимся без обязательств. Точные условия обсуждаются индивидуально — напишите нам.</div></details>
+    <details><summary>У нас не СНТ, а коттеджный посёлок. Подойдёт?</summary><div>Да. Улицы и участки настраиваются под вашу планировку — важно только, чтобы был общий чат в Telegram.</div></details>
+    <details><summary>Соседи могут платить наличными?</summary><div>Да. При сдаче взноса вы указываете способ: наличными или безналичными. Казначей получает наличные и подтверждает взнос — в казне он учитывается так же, как перевод.</div></details>
+    <details><summary>Бот сам распознаёт сумму из чека?</summary><div>Сейчас — нет, и мы честно об этом говорим: сумму называет сосед при отправке чека, а казначей подтверждает её перед зачислением. Механика защищает от ошибок распознавания и от «опечаток»: двойная проверка вместо слепого доверия.</div></details>
+    <details><summary>А если платят за другой участок?</summary><div>Бот по умолчанию предлагает ваш участок, но перед подтверждением можно выбрать любой другой — например, оплатить взнос за родителей.</div></details>
+    <details><summary>Можно отменить взнос, если ошиблись?</summary><div>Да. Взнос попадает в казну только после подтверждения казначея, и до этого момента его можно скорректировать. Ошибки и возвраты фиксируются в отчётах — история не переписывается, а корректируется.</div></details>
+    <details><summary>А если сосед платит «натурой» — мешком цемента?</summary><div>Учитывается и это: при сдаче взноса указываете сумму 0 и подписываете «натура». Казначей подтверждает взнос материалами — в отчёте он виден отдельно от денежных.</div></details>
+  </div>
+</div></section>
+
+<section><div class="wrap"><div class="cta">
+  <h2>Загляните в демо-казну</h2>
+  <p>Живой демо-посёлок «СНТ Заречье»: сборы, карта участков, отчёты. Потрогайте, прежде чем звать к себе.</p>
+  <a class="btn btn-white" href="https://t.me/snt_zarechye_bot">Открыть демо-бота</a>
+  <a class="btn btn-ghost" href="#start">Написать нам</a>
+  <p style="margin-top:18px;font-size:15px">Хотите увидеть, как выглядят уведомления в общем чате посёлка? Загляните в тестовый чат «СНТ Заречье» — там бот работает вживую.</p>
+</div></div></section>
+
+<footer><div class="wrap">
+  Демо-бот: @snt_zarechye_bot · Сайт: kazna-bot.ru / казнабот.рф · <a href="#start">Написать нам</a><br>
+  Оператор персональных данных — Милютин Дмитрий Валерьевич, реестр Роскомнадзора № 77-26-580272. © 2026. Бот-казначей для СНТ и посёлков.
+</div></footer>
+
+</body>
+</html>
