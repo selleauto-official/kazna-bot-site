@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: http://kazna-bot.ru/sitemap.xml
