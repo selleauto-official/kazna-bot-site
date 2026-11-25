@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114509595', 'ym');
+
+    ym(114509595, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/114509595" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>История одного посёлка: учёт взносов в СНТ — от тетрадки до телеграм-бота | КазнаБот</title>
+<meta name="description" content="Реальная история посёлка ИЖС: казначей с блокнотиком и Excel, вопросы соседей, раздел посёлка пополам — и телеграм-бот, который ведёт учёт взносов в СНТ вместо человека. Как организовать сборы, если казну никто не хочет брать.">
+<link rel="canonical" href="https://kazna-bot.ru/blog/istoriya-poselka.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="История одного посёлка: учёт взносов в СНТ — от тетрадки до телеграм-бота">
+<meta property="og:description" content="Казначей с блокнотиком, споры в чатике, раздел посёлка пополам и бот на 40+ функций. Реальная история того, как мы вели учёт взносов в СНТ.">
+<meta property="og:url" content="https://kazna-bot.ru/blog/istoriya-poselka.html">
+<meta property="og:image" content="https://kazna-bot.ru/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "История одного посёлка: как мы вели учёт взносов в СНТ — от тетрадки до телеграм-бота",
+  "description": "Реальная история посёлка ИЖС: казначей с блокнотиком, вопросы соседей, раздел посёлка пополам — и телеграм-бот, который ведёт учёт взносов в СНТ.",
+  "datePublished": "2026-11-24",
+  "author": {"@type": "Organization", "name": "КазнаБот"},
+  "publisher": {"@type": "Organization", "name": "КазнаБот", "url": "https://kazna-bot.ru/"},
+  "mainEntityOfPage": "https://kazna-bot.ru/blog/istoriya-poselka.html"
+}
+</script>
+<style>
+
+  :root{
+    --accent:#FF6B2C; --accent-dark:#E5511A; --accent-soft:#FFF0E6;
+    --teal:#0E9F94; --ink:#22303C; --muted:#64748B; --bg:#FFF9F4;
+    --card:#FFFFFF; --line:#F1E4D8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* HEADER — как на лендинге */
+  header{position:sticky;top:0;z-index:50;background:#FFF9F4EE;backdrop-filter:blur(8px);border-bottom:2px solid var(--accent)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-weight:800;font-size:22px;text-decoration:none;color:var(--ink)}
+  .logo b{color:var(--accent)}
+  .nav a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;margin-left:22px}
+  .nav a:hover{color:var(--accent)}
+  .nav a.here{color:var(--accent)}
+  @media(max-width:900px){.nav .links{display:none}}
+
+  /* ШАПКА СТАТЬИ */
+  .article-hero{background:linear-gradient(120deg,#FF6B2C 0%,#FF8E3C 55%,#FFB347 100%);color:#fff;padding:56px 0 48px}
+  .article-hero .inner{max-width:720px;margin:0 auto}
+  .crumbs{font-size:14px;opacity:.9;margin-bottom:18px}
+  .crumbs a{color:#fff;text-decoration:underline}
+  .article-hero h1{font-size:38px;line-height:1.2;letter-spacing:-.5px;margin-bottom:16px}
+  .lead{font-size:20px;opacity:.96;line-height:1.5}
+  .meta-line{margin-top:22px;font-size:14.5px;opacity:.9}
+  @media(max-width:860px){.article-hero h1{font-size:28px}}
+
+  /* ТЕКСТ СТАТЬИ */
+  article{padding:56px 0}
+  .prose{max-width:720px;margin:0 auto;font-size:19px;line-height:1.75}
+  .prose p{margin-bottom:22px}
+  .prose h2{font-size:27px;line-height:1.25;letter-spacing:-.3px;margin:48px 0 18px;color:var(--ink)}
+  .prose h2:first-child{margin-top:0}
+  .prose ul{margin:0 0 22px 22px}
+  .prose li{margin-bottom:8px}
+  .prose .say{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 14px 14px 0;padding:18px 22px;margin:0 0 22px}
+  .prose .say p{margin:0}
+  .prose .note{color:var(--muted);font-size:16.5px}
+  .prose figure{margin:28px 0}
+  .prose figure img{width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(34,48,60,.08)}
+  .prose figcaption{margin-top:10px;font-size:14.5px;color:var(--muted);text-align:center}
+  .prose strong{color:var(--accent-dark)}
+
+  /* CTA — как на лендинге */
+  .cta{background:linear-gradient(120deg,#0E9F94,#12B5A8);color:#fff;border-radius:20px;padding:44px;text-align:center;margin-top:48px}
+  .cta h2{color:#fff;font-size:28px;margin-bottom:12px}
+  .cta p{opacity:.92;margin-bottom:24px}
+  .btn{display:inline-block;padding:15px 30px;border-radius:12px;font-weight:700;font-size:17px;text-decoration:none;transition:.2s}
+  .btn-white{background:#fff;color:#0B7C73}
+  .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .btn-ghost{border:2px solid rgba(255,255,255,.7);color:#fff;margin-left:12px}
+  .btn-ghost:hover{background:rgba(255,255,255,.15)}
+  @media(max-width:600px){.btn-ghost{margin:12px 0 0}}
+
+  /* ПОСТСКРИПТУМ */
+  .ps{max-width:720px;margin:26px auto 0;font-size:15.5px;color:var(--muted);font-style:italic;text-align:center}
+
+  footer{background:#22303C;color:#B8C4CE;padding:36px 0;font-size:14.5px;text-align:center;margin-top:56px}
+  footer a{color:#FFB347;text-decoration:none}
+
+</style>
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="logo" href="../index.html">Казна<b>Бот</b></a>
+  <div class="links">
+    <a href="../index.html#how">Как работает</a>
+    <a href="../index.html#roles">Роли</a>
+    <a href="../index.html#transparency">Прозрачность</a>
+    <a href="../index.html#privacy">Приватность</a>
+    <a href="istoriya-poselka.html" class="here">Блог</a>
+    <a href="../index.html#start" style="color:var(--accent)">Написать нам</a>
+  </div>
+</div></header>
+
+<div class="article-hero">
+  <div class="wrap">
+    <div class="inner">
+      <div class="crumbs"><a href="../index.html">Главная</a> → <a href="istoriya-poselka.html">Блог</a></div>
+      <h1>История одного посёлка: как мы вели учёт взносов в СНТ — от тетрадки до телеграм-бота</h1>
+      <p class="lead">Ручки, карандаши, килобайты памяти, Excel, Google-таблицы…</p>
+      <div class="meta-line">Блог КазнаБота · 24 ноября 2026 · читать 5 минут</div>
+    </div>
+  </div>
+</div>
+
+<article><div class="wrap">
+  <div class="prose">
+
+    <h2>Васильковое поле</h2>
+    <p>Не позавидуешь нашим казначеям, в нашем посёлке — больше двухсот земельных участков.</p>
+    <p>Нет, сначала было просто: построились в васильковом поле один, второй… десятый. Землю раскупили ещё в 21–22-м, а строились неспешно — нынче дороговато свой «угол» заиметь. Но к 2026-му посёлок разросся: уже около полутора сотен домов. Кто-то живёт постоянно, кто-то «на выходные». Но вот задача: УК у нас нет, ТСН — нет, КУРТ — есть, продавец участков, который обещал содержать общую территорию — ушёл. Не осталось ни УК, ни ТСН, ни того, кто чинил бы дорогу. Как быть?</p>
+
+    <h2>Активисты</h2>
+    <p>А выход нашли такой. Первые заселенцы, самые активные, взяли всё в свои руки.</p>
+    <p>Создали чат, оповещали соседей вступать в него; договаривались с трактористами, электриками, сантехниками и прочими полезными людьми на благо посёлка использовать свои умения. Но самое главное, эти активисты не захотели тащить всю финансовую нагрузку посёлка своими кошельками (негодяи какие!)</p>
+    <p>Это я к чему, да к тому, что нужно собирать всем миром на элементарно поддержание посёлка в состоянии чуть приятнее деревенской помойки: и обочины покосить, и снег зимой убрать с дорог, и шлагбаум починить, и ливневки прокопать, и дорогу отремонтировать… Да! Самим! Вот если б рабочие по территории посёлка таскали бетон или блоки в вакуумных мешках по паре на брата, а не катали бы его со всеми удобствами по нашим дорогам грязными шумными бетоновозками и шаландами — может, и ничего дорогам не было бы. А ещё стройматериалы, отделку завозят… скважины копают, причём скважина одна, а машины для её копки — две. Ломают-ломают нам проезды, ироды!</p>
+
+    <h2>Казначей-альтруист</h2>
+    <p>Однажды вызвался один домовладелец быть казначеем. Завёл карту в Сбере, наточил карандашики, принёс с работы блокнотик и скачал Excel. Всё по-взрослому, как у настоящего счетовода. Со временем он даже завёл Google-таблицу, чтобы сведения казны мало-мальски были в режиме реального времени.</p>
+    <p>Одному Богу известно, как он до сих пор не бросил этим заниматься… Разные люди есть в нашей коммуне. Есть те, кто понимает, что для правильного учёта нужен какой-то порядок, а есть те, кому всё равно: бросил тыщенку на карту — и разбирайтесь без меня дальше. Кто-то кинет деньги, но чек не скинет, кто-то зачем-то два раза один и тот же чек кинет с разницей в неделю. Ищи потом: кто, куда, сколько…</p>
+    <p>Заметьте, казначей работает на голом энтузиазме. Альтруист нашего времени.</p>
+
+    <h2>Много вопросов</h2>
+    <p>Естественно, со временем начали возникать и вопросы к казначею: мол, я кидал, а меня не учли; или почему так дорого заплатили за работу; или за что премию человеку выплатили, который 8 часов на морозе уборку снега в посёлке контролировал; или почему там копали, а мне нет — я тоже скидывался… Одним словом — много вопросов. Начались споры по ремонту дорог, по чьей линии больше большегрузов и бетономешалок ездит, чью линию больше разбивают, у кого ямы глыбже, у кого обочины ширше… Весело, ничего не скажешь.</p>
+    <p>И с каждым разом всё интереснее, злее. Это ж вам не очно на собрании выяснять отношения, а в чатиках…</p>
+
+    <h2>Раздел посёлка</h2>
+    <p>Ну и случился раздел нашего посёлка на 2 половинки.</p>
+    <p>Помню, начиналось всё в конце зимы. Одна улица не хотела снег убирать, три — хотели. Первая ждала весны вот-вот, через неделю; остальные — хотели выехать из посёлка: кто на рынок, а кто и на работу.</p>
+    <p>Так и остались мы в этой половине, а те — в той))))) Каждому своя казна, свой казначей (альтруист им, новый альтруист-женщина нам), работы только со своей стороны. Да так разошлись, что, пожалуй, не хватает только разделительного пятиметрового забора и пулемётных вышек.</p>
+
+    <h2>Кто даст карту для сборов?</h2>
+    <p>Ну что ж? Ищем владельца счёта для сборов. Спасибо и ФНС, и ЦБ РФ, и СБЕРу, и ещё не весть знает кому — за наше счастливое настоящее… Как собирать-то? Допустим, собрали. А заподозрят если что окаянные финансисты, и признают серой деятельностью или обналичкой. Как оправдываться? Как доказывать? А кому оно надо? Кто штрафы платить будет?</p>
+    <p>Так кто даст карту для сборов? А?</p>
+    <div class="say"><p style="margin:0"><b>Правильно, я не дам! Никто не даст.</b></p></div>
+    <p>При этом абсолютное большинство против УК, ТСН и подобных образований — и ждём, значит, администрацию населённого пункта, а попутно наслаждаемся ограничениями.</p>
+    <p>И тут подумал я. А может, замутить чего-то такого простенького, на коленке? Чтобы было, чем оправдаться перед ФНС. Карту-то свою для сборов я не даю, наглец. Да и простенького, в итоге, не шмогло…</p>
+
+    <h2>И тут Остапа понесло</h2>
+    <p>«И тут Остапа понесло…» — по-маненьку собрал телеграм-бота на 40+ функций:</p>
+    <ul>
+      <li>голосования (как в настоящих СНТ)</li>
+      <li>хэш-подпись — от подделки отчётов</li>
+      <li>карта посёлка (цветная, если что)</li>
+      <li>инфа по всем действующим и архивным сборам</li>
+      <li>машинный учёт всех платежей</li>
+      <li>напоминания неплательщикам</li>
+      <li>виджет казны и каждого сбора, таблицы прихода-расхода…</li>
+    </ul>
+    <div class="say"><p style="margin:0">По сути, остался нужен только человек с картой для сборов, ну а сам казначей может теперь больше времени тратить на огород)</p></div>
+
+    <h2>От чека до зелёненького участка</h2>
+    <p>Попробовали сперва узким кругом свойских деревенско-поселковых бета-тестеров.</p>
+    <p>Чек в чат — бот подхватывает: мол, вы на этот сбор? Вы с этого участка? Сколько там кинули?</p>
+    <p>Чик — казначей одобрил, учёт состоялся: участок на карте зелёненький, бот сам ведёт Excel — любой землевладелец посёлка (крупный и мелкий) нажал «Получить отчёт» и получил отчёт о сборе или о казне в целом.</p>
+    <figure>
+      <img src="../05-excel-report.jpeg" alt="Excel-отчёт бота: учёт взносов по улицам" loading="lazy">
+      <figcaption>Отчёт в Excel: учёт по каждой улице — скачать и проверить может любой сосед</figcaption>
+    </figure>
+    <p>Если вдруг запамятовал кто скинуться, так бот каждый вторник в 9 утра присылает напоминание, что без его копеечки совсем туго всем. И так пока не закинет монетку или откажется участвовать. А если отказался — то весь снег зимой к его воротам (но эта функция пока в разработке), а на карте участок сразу красненький (эта функция уже есть).</p>
+    <figure>
+      <img src="../07-group-chat.jpeg" alt="Отчёт и сводки в общем чате посёлка" loading="lazy">
+      <figcaption>Сводки и отчёты приходят в общий чат — спрашивать казначея не нужно</figcaption>
+    </figure>
+
+    <div class="say"><p style="margin:0">Если резюмировать: стало удобнее вести учёт — он сам ведётся; деньги поступают: люди кидают чек. Так и вопросов меньше: чек есть — значит, взнос в учёте. Спорить не с кем — история на виду.</p></div>
+
+    <h2>А кому на Руси жить легче стало?</h2>
+    <p>А кому на Руси жить легче стало? Нашему казначею! В посёлке даже светлее стало с приходом бота… эх, видели б вы её улыбку во все 17 зубов.</p>
+
+    <div class="cta">
+      <h2>Хотите попробовать? Загляните в демо-посёлок:</h2>
+      <p>Живой демо-посёлок «СНТ Заречье»: сборы, карта участков, отчёты. Бесплатно, без обязательств.</p>
+      <a class="btn btn-white" href="https://t.me/snt_zarechye_bot">Открыть демо-бота</a>
+      <a class="btn btn-ghost" href="../index.html#start">Написать нам</a>
+    </div>
+
+    <p class="ps">Если кто-то узнал себя — все совпадения с реальными посёлками случайны. Ну или почти все)))</p>
+  </div>
+</div></article>
+
+<footer><div class="wrap">
+  Демо-бот: @snt_zarechye_bot · Сайт: kazna-bot.ru / казнабот.рф · <a href="../index.html#start">Написать нам</a><br>
+  Оператор персональных данных — Милютин Дмитрий Валерьевич, реестр Роскомнадзора № 77-26-580272. © 2026. Бот-казначей для СНТ и посёлков.
+</div></footer>
+
+</body>
+</html>
