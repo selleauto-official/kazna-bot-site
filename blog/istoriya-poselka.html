@@ -57,11 +57,15 @@
   .nav a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;margin-left:22px}
   .nav a:hover{color:var(--accent)}
   .nav a.here{color:var(--accent)}
-  @media(max-width:900px){.nav .links{display:none}}
+  @media(max-width:900px){
+    .nav{gap:12px}
+    .nav .links{display:flex;overflow-x:auto;gap:14px;font-size:13.5px;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+    .nav .links::-webkit-scrollbar{display:none}
+  }
 
   /* ШАПКА СТАТЬИ */
   .article-hero{background:linear-gradient(120deg,#FF6B2C 0%,#FF8E3C 55%,#FFB347 100%);color:#fff;padding:56px 0 48px}
-  .article-hero .inner{max-width:720px;margin:0 auto}
+  .article-hero .inner{max-width:760px}
   .crumbs{font-size:14px;opacity:.9;margin-bottom:18px}
   .crumbs a{color:#fff;text-decoration:underline}
   .article-hero h1{font-size:38px;line-height:1.2;letter-spacing:-.5px;margin-bottom:16px}
