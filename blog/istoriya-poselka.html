@@ -57,7 +57,11 @@
   .nav a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;margin-left:22px}
   .nav a:hover{color:var(--accent)}
   .nav a.here{color:var(--accent)}
-  @media(max-width:900px){.nav{gap:12px}.nav .links{display:flex;overflow-x:auto;gap:14px;font-size:13.5px;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}.nav .links::-webkit-scrollbar{display:none}}
+  @media(max-width:900px){
+    .nav{gap:12px}
+    .nav .links{display:flex;overflow-x:auto;gap:14px;font-size:13.5px;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+    .nav .links::-webkit-scrollbar{display:none}
+  }
 
   /* ШАПКА СТАТЬИ */
   .article-hero{background:linear-gradient(120deg,#FF6B2C 0%,#FF8E3C 55%,#FFB347 100%);color:#fff;padding:56px 0 48px}
@@ -114,7 +118,7 @@
     <a href="../index.html#transparency">Прозрачность</a>
     <a href="../index.html#privacy">Приватность</a>
     <a href="istoriya-poselka.html" class="here">Блог</a>
-    <a href="https://t.me/dimami_photo" target="_blank" rel="noopener" style="color:var(--accent)">Написать нам</a>
+    <a href="tg://resolve?domain=dimami_photo" style="color:var(--accent)">Написать нам</a>
   </div>
 </div></header>
 
@@ -197,8 +201,8 @@
     <div class="cta">
       <h2>Хотите попробовать? Загляните в демо-посёлок:</h2>
       <p>Живой демо-посёлок «СНТ Заречье»: сборы, карта участков, отчёты. Бесплатно, без обязательств.</p>
-      <a class="btn btn-white" href="https://t.me/snt_zarechye_bot">Открыть демо-бота</a>
-      <a class="btn btn-ghost" href="https://t.me/dimami_photo" target="_blank" rel="noopener">Написать нам</a>
+      <a class="btn btn-white" href="tg://resolve?domain=snt_zarechye_bot">Открыть демо-бота</a>
+      <a class="btn btn-ghost" href="tg://resolve?domain=dimami_photo">Написать нам</a>
     </div>
 
     <p class="ps">Если кто-то узнал себя — все совпадения с реальными посёлками случайны. Ну или почти все)))</p>
@@ -206,7 +210,7 @@
 </div></article>
 
 <footer><div class="wrap">
-  Демо-бот: @snt_zarechye_bot · Сайт: kazna-bot.ru / казнабот.рф · <a href="https://t.me/dimami_photo" target="_blank" rel="noopener">Написать нам</a><br>
+  Демо-бот: @snt_zarechye_bot · Сайт: kazna-bot.ru / казнабот.рф · <a href="tg://resolve?domain=dimami_photo">Написать нам</a><br>
   Оператор персональных данных — Милютин Дмитрий Валерьевич, реестр Роскомнадзора № 77-26-580272. © 2026. Бот-казначей для СНТ и посёлков.
 </div></footer>
 
